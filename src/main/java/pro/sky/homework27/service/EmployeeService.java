@@ -18,7 +18,7 @@ public class EmployeeService {
     private final Map<String, Employee> employees = new HashMap<>();
 
     private String getKey(Employee employee) {
-        return employee.getName() + " " + employee.getSurname();
+        return employee.getName() + " " + employee.getSurname()
     }
     public Employee add(String name, String surname) {
         Employee employee = new Employee(name, surname);
