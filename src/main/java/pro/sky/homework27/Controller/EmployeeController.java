@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
+
     private final EmployeeService employeeService;
 
     public EmployeeController(EmployeeService employeeService) {
@@ -19,8 +20,10 @@ public class EmployeeController {
     }
     @GetMapping("/add")
     public Employee add(@RequestParam ("firstName") String name,
-                        @RequestParam ("lastName") String surname) {
-        return employeeService.add(name, surname);
+                        @RequestParam ("lastName") String surname,
+                        @RequestParam ("salary") double salary,
+                        @RequestParam ("departmentID") int department) {
+        return employeeService.add(name, surname, salary, department);
     }
     @GetMapping("/remove")
     public Employee remove(@RequestParam ("firstName") String name,
@@ -29,7 +32,8 @@ public class EmployeeController {
     }
     @GetMapping("/find")
     public Employee find(@RequestParam ("firstName") String name,
-                        @RequestParam ("lastName") String surname) {
+                        @RequestParam ("lastName") String surname)
+                          {
         return employeeService.find(name, surname);
     }
     @GetMapping("/")
