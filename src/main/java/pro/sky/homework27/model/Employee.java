@@ -1,8 +1,12 @@
 package pro.sky.homework27.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.Locale;
 import java.util.Objects;
+
+import static org.apache.commons.lang3.StringUtils.capitalize;
 
 public class Employee {
     @JsonProperty("firstName")
@@ -12,14 +16,14 @@ public class Employee {
 //    @JsonProperty("salary")
     private final double salary;
 //    @JsonProperty("department")
-    private final int department;
+    private final int departmentId;
 
 
-    public Employee(String name, String surname, double salary, int department) {
-        this.name = name;
-        this.surname = surname;
+    public Employee(String name, String surname, double salary, int departmentId) {
+        this.name = capitalize(name.toLowerCase());
+        this.surname = capitalize(surname.toLowerCase());
         this.salary = salary;
-        this.department = department;
+        this.departmentId = departmentId;
     }
 
     public String getName() {
@@ -34,8 +38,8 @@ public class Employee {
         return salary;
     }
 
-    public int getDepartment() {
-        return department;
+    public int getDepartmentId() {
+        return departmentId;
     }
 
     @Override
@@ -48,18 +52,18 @@ public class Employee {
         }
         Employee employee = (Employee) o;
         return Double.compare(employee.salary, salary) == 0 &&
-                department == employee.department && Objects.equals(name, employee.name) &&
+                departmentId == employee.departmentId && Objects.equals(name, employee.name) &&
                 Objects.equals(surname, employee.surname);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, surname, salary, department);
+        return Objects.hash(name, surname, salary, departmentId);
     }
 
     @Override
     public String toString() {
-        return String.format("ФИ: %s %s, ЗП: %2f отдел:%d", name, surname, salary, department);
+        return String.format("ФИ: %s %s, ЗП: %2f отдел:%d", name, surname, salary, departmentId);
     }
 }
 
