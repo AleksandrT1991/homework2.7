@@ -7,52 +7,51 @@ import pro.sky.homework27.exceptions.EmployeeStorageIsFullException;
 import pro.sky.homework27.model.Employee;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 @Service
 public class EmployeeService {
-    private static final int LIMIT = 10;
-    private final Map<String, Employee> employees = new HashMap<>();
 
-    private String getKey(Employee employee) {
-        return employee.getName() + " " + employee.getSurname();
+    private static final int LIMIT = 10;
+    private final List<Employee> employees = new ArrayList<>();
+    private final ValidatorService validatorService;
+
+    public EmployeeService(ValidatorService validatorService) {
+        this.validatorService=validatorService;
     }
-    public Employee add(String name, String surname) {
-        Employee employee = new Employee(name, surname);
-        String key = getKey(employee);
-        if (employees.containsKey(key)) {
+
+    public Employee add(String name, String surname, double salary, int department) {
+        Employee employee = new Employee(
+                validatorService.validateName(name),
+                validatorService.validateSurname(surname),
+                salary,
+                department);
+        if (employees.contains(employee)){
             throw new EmployeeAlreadyAddedException();
         }
         if (employees.size() < LIMIT) {
-            return employees.put(key,employee);
+            employees.add(employee);
+            return employee;
         }
             throw new EmployeeStorageIsFullException();
     }
 
     public Employee remove(String name, String surname) {
-        String key = getKey(new Employee(name, surname));
-        if (!employees.containsKey(key)) {
-            throw new EmployeeNotFoundException();
-        }
-        return employees.remove(key);
+        Employee employee = employees.stream().
+                filter (emp -> emp.getName().equals(name) && emp.getSurname().equals(surname))
+                .findFirst().orElseThrow(EmployeeNotFoundException::new);
+        employees.remove((employee));
+        return employee;
     }
-
-
     public Employee find(String name, String surname) {
-        Employee employee = new Employee(name, surname);
-        if (!employees.containsKey(getKey(employee))) {
-            throw new EmployeeNotFoundException();
-        }
-            return employee;
+        return employees.stream()
+                .filter(employee -> employee.getName().equals(name) && employee.getSurname().equals(surname))
+                .findFirst()
+                .orElseThrow(EmployeeNotFoundException::new);
     }
-
     public List<Employee> getAll() {
-        return new ArrayList<>(employees.values());
+        return new ArrayList<>(employees);
     }
-
-
 }
 

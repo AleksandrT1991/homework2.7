@@ -12,24 +12,28 @@ import java.util.List;
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
+
     private final EmployeeService employeeService;
 
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
     @GetMapping("/add")
-    public Employee add(@RequestParam ("firstName") String name,
-                        @RequestParam ("lastName") String surname) {
-        return employeeService.add(name, surname);
+    public Employee add(@RequestParam ("name") String name,
+                        @RequestParam ("surname") String surname,
+                        @RequestParam ("salary") double salary,
+                        @RequestParam ("departmentId") int department) {
+        return employeeService.add(name, surname, salary, department);
     }
     @GetMapping("/remove")
-    public Employee remove(@RequestParam ("firstName") String name,
-                        @RequestParam ("lastName") String surname) {
+    public Employee remove(@RequestParam ("name") String name,
+                        @RequestParam ("surname") String surname) {
         return employeeService.remove(name, surname);
     }
     @GetMapping("/find")
-    public Employee find(@RequestParam ("firstName") String name,
-                        @RequestParam ("lastName") String surname) {
+    public Employee find(@RequestParam ("name") String name,
+                        @RequestParam ("surname") String surname)
+                          {
         return employeeService.find(name, surname);
     }
     @GetMapping("/")
