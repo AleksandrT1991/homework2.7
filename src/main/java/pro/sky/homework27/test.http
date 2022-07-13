@@ -1,3 +1,0 @@
-
-GET http://localhost:8080/employee/add?name=sleks&surname=sergeev&salary=51000&departmentId=2
-

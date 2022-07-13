@@ -10,27 +10,36 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public record DepartmentService(EmployeeService employeeService) {
+    public class DepartmentService {
 
-    public Employee findEmployeeWithMaxSalaryFromDepartment(int department) {
-        return employeeService.getAll().stream().filter(employee -> employee.getDepartmentId() == department)
+    private final EmployeeService employeeService;
+
+    private DepartmentService(EmployeeService employeeService){
+        this.employeeService = employeeService;
+    }
+
+    public Employee employeeWithMaxSalary(int departmentId) {
+        return employeeService.getAll().stream()
+                .filter(employee -> employee.getDepartment() == departmentId)
                 .max(Comparator.comparingDouble(Employee::getSalary)).
                 orElseThrow(EmployeeNotFoundException::new);
     }
 
-    public Employee findEmployeeWithMinSalaryFromDepartment(int departmentId) {
-        return employeeService.getAll().stream().filter(employee -> employee.getDepartmentId() == departmentId)
+    public Employee employeeWithMinSalary(int departmentId) {
+        return employeeService.getAll().stream().filter(employee -> employee.getDepartment() == departmentId)
                 .min(Comparator.comparingDouble(Employee::getSalary)).
                 orElseThrow(EmployeeNotFoundException::new);
     }
 
-    public List<Employee> findEmployeesFromDepartment(int departmentId) {
-        return employeeService.getAll().stream().filter(employee -> employee.getDepartmentId() == departmentId).
+    public List<Employee> employeesFromDepartment(int departmentId) {
+        return employeeService.getAll().stream()
+                .filter(employee -> employee.getDepartment() == departmentId).
                 collect(Collectors.toList());
 
     }
 
-    public Map<Integer, List<Employee>> findEmployees() {
-        return employeeService.getAll().stream().collect(Collectors.groupingBy(Employee::getDepartmentId));
+    public Map<Integer, List<Employee>> employeesGroupeDepartment() {
+        return employeeService.getAll().stream().collect(Collectors.groupingBy(Employee::getDepartment));
     }
+
 }

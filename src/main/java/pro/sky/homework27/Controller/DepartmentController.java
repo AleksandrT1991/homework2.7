@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping ("/departments")
+@RequestMapping ("/department")
 public class DepartmentController {
     private final DepartmentService departmentService;
 
@@ -20,20 +20,20 @@ public class DepartmentController {
     }
 
     @GetMapping("/max-salary")
-    public Employee findEmployeeWithMaxSalaryFromDepartment(@RequestParam("departmentId") int departmentId) {
-        return departmentService.findEmployeeWithMaxSalaryFromDepartment(departmentId);
+    public Employee employeeWithMaxSalaryFromDepartment(@RequestParam("departmentId") int department) {
+        return departmentService.employeeWithMaxSalary(department);
     }
     @GetMapping("/min-salary")
-    public Employee findEmployeeWithMinSalaryFromDepartment(@RequestParam("departmentId") int departmentId) {
-        return departmentService.findEmployeeWithMinSalaryFromDepartment(departmentId);
+    public Employee employeeWithMinSalaryFromDepartment(@RequestParam("departmentId") int department) {
+        return departmentService.employeeWithMinSalary(department);
     }
     @GetMapping(value = "/all", params = "departmentId")
-    public List <Employee> findEmployeesFromDepartment(@RequestParam("departmentId") int departmentId) {
-        return departmentService.findEmployeesFromDepartment(departmentId);
+    public List <Employee> employeesFromDepartment(@RequestParam("departmentId") int department) {
+        return departmentService.employeesFromDepartment(department);
     }
     @GetMapping("/all")
-    public Map<Integer, List<Employee>> findEmployees(@RequestParam("departmentId") int departmentId) {
-    return departmentService.findEmployees();
+    public Map<Integer, List<Employee>> employeesGroupeDepartment(@RequestParam("departmentId") int department) {
+    return departmentService.employeesGroupeDepartment();
     }
 }
 
